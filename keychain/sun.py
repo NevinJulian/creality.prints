@@ -1,35 +1,63 @@
+from pathlib import Path
+
 from build123d import *
 
-FACE = [(-18, 21), (-1, 27), (17, 20), (24, -1), (17, -15), (-3, -23), (-17, -16), (-27, 4)]
-RAYS = [
-    [(-9, 24), (-13, 42), (-10, 50)],
-    [(2, 26), (10, 45), (28, 50)],
-    [(-21, 16), (-28, 20), (-33, 28), (-37, 40), (-35, 45)],
-    [(17, 20), (29, 37), (48, 30)],
-    [(-27, 4), (-43, 12), (-48, 20), (-48, 29)],
-    [(21, 9), (35, 15), (38, 15), (43, 12), (50, 2)],
-    [(-22, -10), (-44, -6), (-50, 4)],
-    [(24, -1), (37, -4), (41, -15), (40, -24)],
-    [(17, -15), (23, -17), (25, -22), (25, -35), (20, -45)],
-    [(-17, -16), (-26, -27), (-40, -26), (-45, -21)],
-    [(8, -20), (7, -38), (-8, -50)],
-    [(-5, -23), (-6, -35), (-15, -42), (-27, -43)],
-]
-EYES = [
-    [(-18, 5), (-14, 9), (-10, 8)],
-    [(3, 11), (7, 14), (11, 13)],
-]
-NOSE = [(-3, 6), (-3, -1), (-1, -1)]
-MOUTH = [(-7, -13), (-2, -15), (1, -14), (5, -10), (6, -5), (2, -8), (-2, -10), (-5, -10), (-11, -8)]
+SVG = Path(__file__).parent / "sun.svg"
+STROKE = 5.38
+MITER_LIMIT = 10
 
 
-def sun(size, line):
-    k = size / 100
-    shapes = []
-    for stroke in [FACE + FACE[:1], *RAYS, *EYES, NOSE]:
-        points = [Vector(x * k, y * k) for x, y in stroke]
-        for a, b in zip(points, points[1:]):
-            shapes.append(SlotCenterPoint((a + b) / 2, b, line))
-    mouth = Polygon(*[(x * k, y * k) for x, y in MOUTH], align=None)
-    shapes.append(offset(mouth, line / 2))
-    return Sketch() + shapes
+def flatten(wire):
+    edges = list(wire.edges())
+    points = [wire @ 0]
+    while edges:
+        edge = min(edges, key=lambda e: min((e @ 0 - points[-1]).length, (e @ 1 - points[-1]).length))
+        edges.remove(edge)
+        steps = 1 if edge.geom_type == GeomType.LINE else 12
+        samples = [edge @ (i / steps) for i in range(steps + 1)]
+        if (samples[-1] - points[-1]).length < (samples[0] - points[-1]).length:
+            samples.reverse()
+        points += [p for p in samples[1:] if (p - points[-1]).length > 0.01]
+    return points
+
+
+def normal(a, b):
+    d = (b - a).normalized()
+    return Vector(-d.Y, d.X)
+
+
+def polygon(*points):
+    area = sum(a.X * b.Y - b.X * a.Y for a, b in zip(points, points[1:] + points[:1]))
+    return Polygon(*(points if area > 0 else points[::-1]), align=None)
+
+
+def stroke(points, r, closed):
+    pieces = []
+    for a, b in zip(points, points[1:]):
+        n = normal(a, b) * r
+        pieces.append(polygon(a + n, b + n, b - n, a - n))
+    corners = list(zip(points, points[1:], points[2:]))
+    if closed:
+        corners.append((points[-2], points[0], points[1]))
+    for a, b, c in corners:
+        n1, n2 = normal(a, b), normal(b, c)
+        turn = n1.cross(n2).Z
+        if abs(turn) < 1e-4:
+            continue
+        side = -1 if turn > 0 else 1
+        outer = [b + n1 * r * side, b + n2 * r * side]
+        mid = (n1 + n2).normalized()
+        reach = r / mid.dot(n1)
+        if reach < MITER_LIMIT * r:
+            outer.insert(1, b + mid * reach * side)
+        pieces.append(polygon(b, *outer))
+    return pieces
+
+
+def sun(width):
+    pieces = []
+    for wire in import_svg(SVG):
+        pieces += stroke(flatten(wire), STROKE / 2, wire.is_closed)
+    drawing = Sketch() + pieces
+    drawing = scale(drawing, width / drawing.bounding_box().size.X)
+    return Pos(-drawing.bounding_box().center()) * drawing

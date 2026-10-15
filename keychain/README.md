@@ -9,13 +9,14 @@ The sun is mirrored in the model so it reads the right way round on the finished
 | File | Part | Size | Print |
 | --- | --- | --- | --- |
 | `keychain.stl` | Tag with the recess for the sun in the face | 38 × 47 × 3.5 mm | Flat, face down, as exported |
-| `sun.stl` | Inlay that fills the recess | 29 × 29 × 0.6 mm | Together with the tag, see below |
+| `sun.stl` | Inlay that fills the recess | 30 × 30 × 0.6 mm | Together with the tag, see below |
 
 About 5 g of PETG per keychain. The hole takes a normal split ring.
 
 ## Scripts
 
-- `sun.py` has the sun as point lists. `sun(size, line)` scales and strokes it
+- `sun.svg` is the original Le Nerima sun from Illustrator
+- `sun.py` reads it and turns every stroke into an outline with flat ends and sharp corners, the same as in Illustrator. `sun(width)` returns it scaled to that width
 - `keychain.py` builds the tag, writes both STLs next to the script and shows them
 
 ## Print
@@ -42,6 +43,7 @@ About 5 g of PETG per keychain. The hole takes a normal split ring.
 | `THICKNESS` | Thickness of the tag |
 | `HOLE_D` | Hole for the key ring |
 | `NECK_R` | Rounding between the disc and the lug |
-| `SUN_SIZE` | Width of the sun. At 28 it stays 1.7 mm clear of the chamfer |
-| `SUN_LINE` | Line width of the sun. Keep it at two nozzle widths or more |
+| `SUN_SIZE` | Width of the sun. At 30 it stays 1.1 mm clear of the chamfer and the lines are 0.77 mm wide |
 | `SUN_DEPTH` | Depth of the inlay, three layers at 0.2 mm |
+
+The line width comes from the SVG and scales with `SUN_SIZE`. In the drawing the end of the right eye and the face, and the nose and the mouth, are only about 0.3 mm apart at this size. A 0.4 mm nozzle may close those gaps.
