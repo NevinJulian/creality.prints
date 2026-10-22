@@ -4,13 +4,14 @@ from ocp_vscode import show
 from common import *
 
 TEE_LENGTH = 54
+TEE_SHANK = 5
 TEE_HEAD = 11
 HEAD_H = 8
 TIP_H = 10
 
 
 def make_clip():
-    return body([MOUTH] * BALLS, [TEE_PLAY] * TEES, clip=True)
+    return body([MOUTH] * BALLS, [TEE_HOLE] * TEES, clip=True)
 
 
 def tee():

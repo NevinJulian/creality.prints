@@ -6,7 +6,7 @@ Each ball sits in a spherical pocket. The faces close over the ball by 1.2 mm on
 
 The slot between the prong and the spine narrows from `SLOT_ROOT` at the bend to `SLOT_TIP` at the end of the prong. Anything thicker than the tip gap pushes the prong open and gets clamped. Up to about 4 mm the prong bends little enough for PLA. For something thicker, raise `SLOT_TIP` rather than forcing it.
 
-The tees go in from the front, tip first, until the head sits on the face. The shank comes out the back.
+The tees go in from the front, tip first. Wooden tees get thicker towards the head, so a tee slides in until the shank is as thick as the hole and wedges there.
 
 ## Parts
 
@@ -14,6 +14,7 @@ The tees go in from the front, tip first, until the head sits on the face. The s
 | --- | --- | --- | --- |
 | `clip.stl` | Clip with three pockets, nine tee holes and the spring clip | 57 × 178 × 16 mm | Flat, as exported |
 | `pocket_test.stl` | Three single pockets with different mouth widths | Three pieces of 45 × 53 × 16 mm | Flat, as exported |
+| `tee_test.stl` | Strip with six tee holes from 5.0 to 6.0 mm | 60 × 22 × 6 mm | Flat, as exported |
 
 ## Official sizes
 
@@ -24,13 +25,14 @@ The tees go in from the front, tip first, until the head sits on the face. The s
 | Tee length | At most 101.6 mm (4 in) | [R&A Equipment Rules, Part 6](https://www.randa.org/roe/the-rules-of-equipment/part-6-devices-and-other-equipment) |
 | Tee shank | Not regulated | Same |
 
-Wooden tees mostly come in 54, 70 and 83 mm. The shank isn't standardised and the numbers you find online range from about 4 to 5 mm, so measure your own tees and set `TEE_SHANK`.
+Wooden tees mostly come in 54, 70 and 83 mm. The shank isn't standardised. Numbers online range from about 4 to 5 mm, and mine are 5 mm at the tip end and 6 mm under the head. The tee test finds the hole size for your tees.
 
 ## Scripts
 
 - `common.py` has the dimensions and builds the outline, the pockets, the spring clip and the tee holes
 - `clip.py` builds the clip, writes `clip.stl` and shows it with three balls and nine 54 mm tees
-- `pocket_test.py` builds the test pieces and writes `pocket_test.stl`
+- `pocket_test.py` builds the pocket test pieces and writes `pocket_test.stl`
+- `tee_test.py` builds the tee hole strip and writes `tee_test.stl`
 
 ## Measurements
 
@@ -42,8 +44,7 @@ Everything is set in `common.py`.
 | `BALL_PLAY` | Gap per side between the ball and the pocket |
 | `MOUTH` | Narrowest gap between the two arm tips. Smaller snaps harder |
 | `BALLS` | Number of pockets |
-| `TEE_SHANK` | Shank diameter of your tees |
-| `TEE_PLAY` | Gap per side between the shank and the hole |
+| `TEE_HOLE` | Diameter of the tee holes |
 | `TEES` | Tee holes per pocket |
 | `THICKNESS` | Thickness of the clip. Thicker means the faces close further over the ball |
 | `RING_W` | Width of the arms around the ball. Wider arms are stiffer and snap harder |
@@ -54,18 +55,27 @@ Everything is set in `common.py`.
 
 ## Pocket test
 
-Each test piece is one segment of the real clip with the mouth width engraved on the front. Print the test before the clip.
+Each test piece is one segment of the real clip with the mouth width engraved on the front.
 
 1. Push a ball into each pocket from the open side
-2. Pick the one that snaps in with a firm push and doesn't let go when you shake it upside down. Set `MOUTH` to the number on it
-3. Push a tee into each of the three holes. Seen from the engraved side, the top hole is `TEE_SHANK` exactly, the middle one 0.1 mm bigger per side and the bottom one 0.2 mm bigger
-4. Pick the hole the tee goes through by hand and stays in when you shake it. Set `TEE_PLAY` to 0, 0.1 or 0.2
-5. Run `clip.py` and print the clip
+2. Check which ones hold the ball when you shake the piece upside down
+3. Set `MOUTH` to the number of a pocket that holds. If several do, take the middle one rather than the narrowest. A narrower mouth bends the arms further every time and makes the ball harder to get out
+
+## Tee test
+
+A small strip with six holes from 5.0 to 6.0 mm, the size engraved under each hole. The holes have the same chamfer at the top as on the clip.
+
+1. Push a tee tip first into each hole by hand, as far as it goes without real force
+2. Pick the hole where the tee goes in deepest and still stays when you turn the strip upside down and shake it
+3. Set `TEE_HOLE` to its number
+4. If even 6.0 only takes the tip, add bigger sizes to `HOLES` in `tee_test.py` and print it again
 
 ## Print
 
+- Same slicer settings for both tests and the clip, otherwise the tests don't tell you anything
 - PLA, 0.2 mm layer height
 - Flat, as exported. The front, where the tee heads sit, faces up
 - No supports. The upper half of each pocket leans in by at most 22°
-- 4 to 5 walls, so the arms and the prong are solid plastic with no infill inside
+- 5 walls, so the arms and the prong are solid plastic with no infill inside
+- No brim. A brim fills the gap at the end of the prong
 - PLA gets soft at around 55 °C. Don't leave the bag in a car in the summer sun

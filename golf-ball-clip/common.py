@@ -10,8 +10,7 @@ BALL_PLAY = 0.3
 MOUTH = 41.0
 BALLS = 3
 
-TEE_SHANK = 4.7
-TEE_PLAY = 0.1
+TEE_HOLE = 5.4
 TEES = 3
 TEE_PITCH = 13
 
@@ -108,22 +107,22 @@ def outline(mouths, clip):
     return shape
 
 
-def tee_hole(play):
-    r = TEE_SHANK / 2 + play
-    hole = Cylinder(r, THICKNESS, align=(Align.CENTER, Align.CENTER, Align.MIN))
-    hole += Pos(0, 0, THICKNESS) * Cone(r, r + TEE_CHAMFER, TEE_CHAMFER, align=(Align.CENTER, Align.CENTER, Align.MAX))
+def tee_hole(diameter, height=THICKNESS):
+    r = diameter / 2
+    hole = Cylinder(r, height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+    hole += Pos(0, 0, height) * Cone(r, r + TEE_CHAMFER, TEE_CHAMFER, align=(Align.CENTER, Align.CENTER, Align.MAX))
     return hole
 
 
-def body(mouths, plays, clip=False):
+def body(mouths, holes, clip=False):
     part = extrude(outline(mouths, clip), THICKNESS)
     part = fillet(part.edges().group_by(Axis.Z)[-1], EDGE_R)
     part = chamfer(part.edges().group_by(Axis.Z)[0], FIRST_LAYER_CHAMFER)
 
     for y in pocket_ys(len(mouths)):
         part -= Pos(POCKET_X, y, THICKNESS / 2) * Sphere(BALL_R)
-        for ty, play in zip(tee_ys(y), plays):
-            part -= Pos(-SPINE / 2, ty) * tee_hole(play)
+        for ty, diameter in zip(tee_ys(y), holes):
+            part -= Pos(-SPINE / 2, ty) * tee_hole(diameter)
     return part
 
 
