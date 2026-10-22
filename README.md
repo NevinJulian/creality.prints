@@ -25,5 +25,6 @@ Open the script of a print and run it while the OCP CAD Viewer is open. The mode
 | [clearance-test](clearance-test) | Pin and hole plate to find the fit clearance for this printer |
 | [cup-holder](cup-holder) | Clamp-on cup holder for a table edge, reaches past a bevelled underside |
 | [cutlery](cutlery) | Fork, spoon and knife with the sun inlaid in the handle, printed flat for strength |
+| [golf-ball-clip](golf-ball-clip) | Clip for the golf bag with snap-in pockets for three balls and holes for nine tees |
 | [keychain](keychain) | Keychain with the Le Nerima sun inlaid flush in the face |
 | [plant-pole](plant-pole) | Modular moss pole with a diamond lattice, twist lock, pot, stand, cap, watering aid and stem clips |

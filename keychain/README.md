@@ -30,10 +30,13 @@ About 5 g of PETG per keychain. The hole takes a normal split ring.
 
 ## Sun inlay
 
-1. In Creality Print select `keychain.stl` and `sun.stl` and drag both in at the same time
-2. Answer yes when it asks whether to load them as one object with multiple parts
+The sun is never printed on its own. It goes into the recess in the same print, as the first three layers in the second colour.
+
+1. In Creality Print import `keychain.stl` and `sun.stl` in one go by selecting both in the file dialog
+2. Answer yes when it asks whether to load them as one object with multiple parts. The object list then shows one keychain with two parts under it. If it doesn't ask, import only `keychain.stl`, right-click it and load `sun.stl` with Add part
 3. Give the sun part the green filament
-4. Copy the object for as many keychains as you need. The filament swaps happen per layer, not per keychain, so a full plate needs barely more purge than a single one
+4. Slice and check the first layer in the preview. The sun has to sit inside the disc in green. If it lies next to the keychain, the files were loaded as two objects
+5. Copy the object for as many keychains as you need. The filament swaps happen per layer, not per keychain, so a full plate needs barely more purge than a single one
 
 ## Measurements
 
