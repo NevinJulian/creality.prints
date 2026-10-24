@@ -20,7 +20,6 @@ BACK_R = 1
 
 INLAY_DEPTH = 0.6
 TICK_W = 0.45
-TICK_START = 0.8
 MM_TICK = 3
 HALF_TICK = 4.5
 CM_TICK = 6
@@ -42,8 +41,9 @@ def length(cm, with_sun):
 
 
 def marks(cm, with_sun):
-    top = WIDTH - TICK_START
-    shapes = []
+    top = WIDTH - FACE_CHAMFER
+    baseline = Pos(START - TICK_W / 2, top) * Rectangle(cm * 10 * STRETCH + TICK_W, TICK_W, align=(Align.MIN, Align.MAX))
+    shapes = [baseline]
     for mm in range(cm * 10 + 1):
         x = START + mm * STRETCH
         tick = CM_TICK if mm % 10 == 0 else HALF_TICK if mm % 5 == 0 else MM_TICK

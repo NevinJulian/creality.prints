@@ -2,6 +2,8 @@
 
 20 cm ruler with the Le Nerima sun. The marks, the numbers and the sun are inlaid flush into the face in a second colour. Like the keychain, the face prints down on the plate, so it shows no layer lines and the colour only changes in the first three layers.
 
+The marks hang from a thin line along the measuring edge, so the whole scale prints as one connected shape. As separate little marks the nozzle had to jump between them, and PETG strung on every jump.
+
 The script builds the ruler face up, the way you read it, and turns it over for the STLs.
 
 ## Parts
@@ -29,6 +31,8 @@ The numbers use Arial Bold.
 - No supports
 - A smooth plate gives a glossy face that reads well
 - Load each part together with its inlay as one object with two parts and give the inlay the second filament, the same way as for the [keychain](../keychain). Check the first layer in the preview before printing
+- White should print first on the first layer. Strings from the green then land on the white and end up inside the ruler instead of on the face. The steps slider in the preview shows the order on layer 1
+- PETG strings a lot once it has taken up moisture. Dry the green spool if it has been open for a while. If it still strings, lower the nozzle temperature of the green by 5 to 10 °C
 
 ## Test strip first
 

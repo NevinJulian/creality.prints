@@ -28,4 +28,5 @@ Open the script of a print and run it while the OCP CAD Viewer is open. The mode
 | [golf-ball-clip](golf-ball-clip) | Clip for the golf bag with snap-in pockets for three balls and holes for nine tees |
 | [keychain](keychain) | Keychain with the Le Nerima sun inlaid flush in the face |
 | [plant-pole](plant-pole) | Modular moss pole with a diamond lattice, twist lock, pot, stand, cap, watering aid and stem clips |
+| [purge-bin](purge-bin) | Bin behind the K2 that catches the purge waste from the colour changes, held by two magnets |
 | [ruler](ruler) | 20 cm ruler with marks, numbers and the Le Nerima sun inlaid flush in the face |
